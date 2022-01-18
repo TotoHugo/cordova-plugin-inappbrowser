@@ -453,6 +453,32 @@ public class InAppBrowser extends CordovaPlugin {
             return map;
         }
     }
+       
+    /**
+     * Put the list of headers into a map
+     * 
+     * @param headerString
+     * @return
+     */
+    private Map<String, String> parseHeaders(String headerString) {
+        if (headerString.equals(NULL)) {
+            Map<String, String> map = new HashMap<String, String>();
+            return map;
+        } else {
+            Map<String, String> map = new HashMap<String, String>();
+            StringTokenizer features = new StringTokenizer(headerString, ",");
+            StringTokenizer option;
+            while(features.hasMoreElements()) {
+                option = new StringTokenizer(features.nextToken(), ":");
+                if (option.hasMoreElements()) {
+                    String key = option.nextToken();
+                    String value = option.nextToken();
+                    map.put(key, value);
+                }
+            }
+            return map;
+        }
+    }
 
     /**
      * Display a new browser with the specified URL.
