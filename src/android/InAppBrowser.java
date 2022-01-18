@@ -149,6 +149,7 @@ public class InAppBrowser extends CordovaPlugin {
     private String beforeload = "";
     private String[] allowedSchemes;
     private InAppBrowserClient currentClient;
+    private Map <String, String> extraHeaders;
 
     /**
      * Executes the request and returns PluginResult.
@@ -168,6 +169,8 @@ public class InAppBrowser extends CordovaPlugin {
             }
             final String target = t;
             final HashMap<String, String> features = parseFeature(args.optString(2));
+               
+            extraHeaders = parseHeaders(args.optString(3));
 
             LOG.d(LOG_TAG, "target = " + target);
 
@@ -603,9 +606,9 @@ public class InAppBrowser extends CordovaPlugin {
         imm.hideSoftInputFromWindow(edittext.getWindowToken(), 0);
 
         if (!url.startsWith("http") && !url.startsWith("file:")) {
-            this.inAppWebView.loadUrl("http://" + url);
+            this.inAppWebView.loadUrl("http://" + url,extraHeaders);
         } else {
-            this.inAppWebView.loadUrl(url);
+            this.inAppWebView.loadUrl(url,extraHeaders);
         }
         this.inAppWebView.requestFocus();
     }
@@ -1035,7 +1038,7 @@ public class InAppBrowser extends CordovaPlugin {
                     CookieManager.getInstance().setAcceptThirdPartyCookies(inAppWebView,true);
                 }
 
-                inAppWebView.loadUrl(url);
+                inAppWebView.loadUrl(url,extraHeaders);
                 inAppWebView.setId(Integer.valueOf(6));
                 inAppWebView.getSettings().setLoadWithOverviewMode(true);
                 inAppWebView.getSettings().setUseWideViewPort(useWideViewPort);
